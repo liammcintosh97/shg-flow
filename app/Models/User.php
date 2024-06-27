@@ -6,6 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+use App\Enums\UserType;
+use App\Enums\Brand;
 
 class User extends Authenticatable
 {
@@ -20,6 +23,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'asana_id',
+        'number',
+        'disaster_support',
+        'brands',
+        'user_type'
     ];
 
     /**
@@ -42,6 +50,21 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'brands' => AsEnumCollection::of(Brand::class),
+            'user_type' => UserType::class,
         ];
     }
+
+     /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'asana_id' => '',
+        'number' => '',
+        'disaster_support' => false,
+        'brands' => '[]',
+        'user_type' => UserType::ADMIN
+    ];
 }
