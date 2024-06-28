@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 Route::get('/', function () {
     if(Auth::check() && !Auth::user()->active){
@@ -11,6 +12,16 @@ Route::get('/', function () {
         return redirect('/dashboard');
     }
 });
+
+Route::get('users/{id}', function (string $id) {
+    return view('user', ['user' => User::where('id', '=', $id)->first()]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('user');
+
+Route::view('users', 'users')
+    ->middleware(['auth', 'verified'])
+    ->name('users');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

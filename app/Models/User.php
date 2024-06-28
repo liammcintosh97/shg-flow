@@ -50,7 +50,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'brands' => AsEnumCollection::of(Brand::class),
+            'brands' => 'array',
             'user_type' => UserType::class,
         ];
     }
@@ -64,7 +64,7 @@ class User extends Authenticatable
         'asana_id' => '',
         'number' => '',
         'disaster_support' => false,
-        'brands' => '[]',
+        'brands' => [Brand::SHG],
         'user_type' => UserType::ADMIN
     ];
 }
