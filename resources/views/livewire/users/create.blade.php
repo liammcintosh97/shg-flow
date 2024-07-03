@@ -19,7 +19,7 @@ new class extends Component {
   public string $password = '';
   public string $confirm_password = '';
 
-  public function createUser(): RedirectResponse {
+  public function createUser(): void {
     $user = Auth::user();
 
     $rules = [
@@ -49,7 +49,7 @@ new class extends Component {
 
     $newUser->save();
 
-    return $this->redirect('/users', navigate: true);
+    $this->redirect('/users', navigate: true);
   }
 }; ?>
 
