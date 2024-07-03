@@ -19,6 +19,10 @@ Route::get('users/{id}', function (string $id) {
     ->middleware(['auth', 'verified'])
     ->name('user');
 
+Route::view('create-user', 'create-user')
+    ->middleware(['auth', 'verified'])
+    ->name('users');
+
 Route::view('users', 'users')
     ->middleware(['auth', 'verified'])
     ->name('users');
