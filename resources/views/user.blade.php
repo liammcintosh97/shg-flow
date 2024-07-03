@@ -28,7 +28,7 @@
             </div>
             <div>
               <h3 class="text-m font-medium text-gray-900">{{__('Brands')}}</h3>
-              <p class="min-h-4">{{implode($user->brands)}}</p>
+              <p class="min-h-4">{{implode(", ",$user->brands)}}</p>
             </div>
           </div>
           <div class="flex gap-4 flex-wrap mt-8">

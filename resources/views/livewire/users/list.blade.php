@@ -39,7 +39,7 @@ new class extends Component {
         <tr class="border-b border-gray-100">
           <td class="py-4 pr-8">{{$user->name}}</td>
           <td class="py-4 pr-8">{{$user->email}}</td>
-          <td class="py-4 pr-8">{{implode(",",$user->brands)}}</td>
+          <td class="py-4 pr-8">{{implode(", ",$user->brands)}}</td>
           <td class="py-4 pr-8">
             @if ($user->is(auth()->user()))
               <a href="profile"  wire:navigate>

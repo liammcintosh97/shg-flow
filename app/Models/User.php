@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserType;
-use App\Enums\Brand;
 
 class User extends Authenticatable
 {
@@ -63,7 +62,7 @@ class User extends Authenticatable
         'asana_id' => '',
         'number' => '',
         'disaster_support' => false,
-        'brands' => [Brand::SHG],
+        'brands' => '',
         'user_type' => UserType::ADMIN
     ];
 }
