@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
+use Illuminate\Validation\Rules\Password;
 use App\Enums\UserType;
 use App\Enums\Brand;
 use Illuminate\Http\RedirectResponse;
@@ -12,12 +13,13 @@ use Illuminate\Http\RedirectResponse;
 new class extends Component {
   public string $name = 'Jane Doe';
   public string $email = 'jane.doe@email.com';
-  public string $number = '123';
-  public string $asana_id = '123';
-  public string $user_type = UserType::STAFF->value;
-  public $brands = ['TSG','TGIF'];
+  public string $number = '0449609700';
+  public string $asana_id = '1234';
+  public string $user_type = UserType::ADMIN->value;
+  public $brands = [BRAND::TSG->value];
   public string $password = '';
-  public string $confirm_password = '';
+  public string $password_confirmation = '';
+  public string $hashed_password = '';
 
   public function createUser(): void {
     $user = Auth::user();
@@ -28,18 +30,18 @@ new class extends Component {
       'number' => ['required', 'string', 'max:255'],
       'asana_id' => ['required', 'numeric'],
       'user_type' => ['required'],
-      'password' => [],
+      'hashed_password' => [],
       'brands' => ['required'],
     ];
 
     if ($this->user_type == UserType::ADMIN->value){
-      $rules['password'] = ['required', 'string', 'max:255'];
+      $rules['hashed_password'] = ['required'];
     }
 
-    $validated = $this->validate($rules);
+    $validated = $this->validate($rules,['hashed_password.required' => 'A']);
 
     $newUser = new User;
-    $newUser->password = Hash::make($validated['password']);
+    $newUser->password = $validated['hashed_password'];
     $newUser->email = $validated['email'];
     $newUser->name = $validated['name'];
     $newUser->number = $validated['number'];
@@ -50,6 +52,15 @@ new class extends Component {
     $newUser->save();
 
     $this->redirect('/users', navigate: true);
+  }
+
+  public function onConfirmPasswordChange(): void {
+
+    $validated = $this->validate([
+      'password' => ['required', 'string', Password::defaults(), 'confirmed'],
+    ]);
+    
+    $this->hashed_password =  Hash::make($validated['password']);
   }
 }; ?>
 
@@ -130,11 +141,12 @@ new class extends Component {
           <x-input-label for="password" :value="__('password')" />
           <x-text-input wire:model="password" id="password" name="password" type="password" class="mt-1 block w-full" required autofocus autocomplete="password" />
           <x-input-error class="mt-2" :messages="$errors->get('password')" />
+            <x-input-error class="mt-2" :messages="$errors->get('hashed_password')" />
         </div>
         <div>
-          <x-input-label for="confirm_password" :value="__('Confirm Password')" />
-          <x-text-input wire:model="confirm_password" id="confirm_password" name="confirm_password" type='password' class="mt-1 block w-full" required autofocus autocomplete="confirm_password" />
-          <x-input-error class="mt-2" :messages="$errors->get('confirm_password')" />
+          <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+          <x-text-input wire:model="password_confirmation" wire:change="onConfirmPasswordChange" id="password_confirmation" name="password_confirmation" type='password' class="mt-1 block w-full" required autofocus autocomplete="confirm_password" />
+
         </div>
       </div>
     </section>    
