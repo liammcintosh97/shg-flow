@@ -41,15 +41,9 @@ new class extends Component {
           <td class="py-4 pr-8">{{$user->email}}</td>
           <td class="py-4 pr-8">{{implode(", ",$user->brands)}}</td>
           <td class="py-4 pr-8">
-            @if ($user->is(auth()->user()))
-              <a href="profile"  wire:navigate>
-                {{ __('View') }}
-              </a>       
-            @else
-              <a href="users/{{$user->id}}"  wire:navigate>
-                {{ __('View') }}
-              </a>
-            @endif
+            <a href="users/{{$user->id}}"  wire:navigate>
+              {{ __('View') }}
+            </a>
         </td>
         </tr>
       @endforeach
