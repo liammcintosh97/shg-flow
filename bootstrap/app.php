@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthBearerHandler;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
   ->withMiddleware(function (Middleware $middleware) {
     // Register the custom rate limiter
     $middleware->alias([
-      'throttle' => ThrottleHandler::class
+      'throttle' => ThrottleHandler::class,
+      'auth.bearer' => AuthBearerHandler::class
     ]);
   })
   ->withExceptions(function (Exceptions $exceptions) {
